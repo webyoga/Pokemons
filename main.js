@@ -1,7 +1,11 @@
 function $getElById(id) {
   return document.getElementById(id);
 }
+
+const $btnnew = $getElById('btn-new');  //кнопка New
+
 const $btn = $getElById('btn-kick');
+
 const character = {
   name: 'Picachu',
   defaultHP: 100,
@@ -26,18 +30,54 @@ const enemy = {
   renderProgressbarHP: renderProgressbarHP,
 }
 
-// пример применения деструктуризации (теория) 
+// Функция с замыканием для вывода номера текущего клика
+function click1(cl) {
+  return function() {
+    cl += 1;
+    return cl;
+  }
+}  
 
-let {defaultHP: defaultHP1, damageHP: damageHP1} = character;  //присвоил свойста объекта defaultHP и damageHP перменным defaultHP1 и damageHP1
+const clickclick = click1(0);     //счетчик кликов по кнопке Kick
+const clickclick1 = click1(0);   //счетчик кликов по кнопке New
 
-let {defaultHP: defaultHP2, damageHP: damageHP2} = enemy;    //присвоил свойста объекта defaultHP и damageHP перменным defaultHP1 и damageHP1
+// Функция с замыканием для подсчета оставшихся кликов и ограничения кликов
+function click2(cl) {
+  return function() {
+    cl -= 1;
+    return cl;
+  }
+}  
 
+const clickoff2 = click2(6);   //создание счетчика оставшихся кликов по кнопке Kick 
+const clickoff3 = click2(6);   //создание счетчика кликов по кнопке New
 
+const clickoff = click2(7);   //создание счетчика для ограничения кол-ва кликов до 6 нажатий  по кнопке Kick
+const clickoff1 = click2(7);  ////создание счетчика для ограничения кол-ва кликов до 6 нажатий  по кнопке New
+
+//обработчик для события "Клиr" по кнопке Kick, используя метод addEventListener 
 $btn.addEventListener('click', function () {
-  console.log('Kick');
-  character.changeHP(random(20));
-  enemy.changeHP(random(20));
+  if (clickoff() > 0) {
+    console.log(`Вы совершили ${clickclick()}й клик по кнопке Kick`);  //вызов фукнции с замыканием для подсчета кликов по кнопке Kick + кол-во кликов
+    $btn.innerText +=  `осталось ${clickoff2()} кликов`; 
+    character.changeHP(random(20));
+    enemy.changeHP(random(20));
+  }
+  else {
+    $btn.disabled = true;     //ограничение по кликам до 6
+  }
 });
+
+//обработчик для события "Клик" по кнопке New, используя метод addEventListener 
+$btnnew.addEventListener('click', function () {
+  if (clickoff1() > 0) {
+    console.log(`Вы совершили ${clickclick1()}й клик по кнопке New`); //вызов функции с замыканием для подсчета кликов по кнопке New  + кол-во кликов
+    $btnnew.innerText +=  `осталось ${clickoff3()} кликов`; 
+  }
+  else {
+    $btnnew.disabled = true;   //ограничение по кликам до 6
+  }
+});                  
 
 function init() {
   console.log('Start Game!');
@@ -78,8 +118,6 @@ $logs.insertBefore($p, $logs.children[0]);
 
   this.renderHP();
 }
-
-
 
 function random(num) {
   return Math.ceil(Math.random() * num);
