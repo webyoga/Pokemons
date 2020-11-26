@@ -1,3 +1,6 @@
+import Pokemon from "./pokemon.js";  //получение класса Pokemon в main.js
+import random from "./random.js";    //получение функции random в main.js
+
 function $getElById(id) {
   return document.getElementById(id);
 }
@@ -6,7 +9,18 @@ const $btnnew = $getElById('btn-new');  //кнопка New
 
 const $btn = $getElById('btn-kick');
 
-const character = {
+const player1 = new Pokemon ({
+  name: 'Picachu',
+  selectors: 'character',
+});
+
+const player1 = new Pokemon ({
+  name: 'Charmonder',
+  selectors: 'enemy',
+});
+
+
+/**const character = {
   name: 'Picachu',
   defaultHP: 100,
   damageHP: 100,
@@ -29,6 +43,8 @@ const enemy = {
   renderHPLife: renderHPLife,
   renderProgressbarHP: renderProgressbarHP,
 }
+**/
+
 
 // Функция с замыканием для вывода номера текущего клика
 function click1(cl) {
@@ -79,11 +95,14 @@ $btnnew.addEventListener('click', function () {
   }
 });                  
 
+/**
 function init() {
   console.log('Start Game!');
   character.renderHP();
   enemy.renderHP();
 }
+
+
 
 function renderHP() {
   this.renderHPLife();
@@ -118,10 +137,8 @@ $logs.insertBefore($p, $logs.children[0]);
 
   this.renderHP();
 }
+**/
 
-function random(num) {
-  return Math.ceil(Math.random() * num);
-}
 
 // лог боя
 function generateLog(firstPerson, secondPerson) {
