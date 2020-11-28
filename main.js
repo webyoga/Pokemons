@@ -14,131 +14,69 @@ const player1 = new Pokemon ({
   selectors: 'character',
 });
 
-const player1 = new Pokemon ({
+const player2 = new Pokemon ({
   name: 'Charmonder',
   selectors: 'enemy',
 });
 
-
-/**const character = {
-  name: 'Picachu',
-  defaultHP: 100,
-  damageHP: 100,
-  elHP: $getElById('health-character'),
-  elProgressbar: $getElById('progressbar-character'),
-  changeHP: changeHP,
-  renderHP: renderHP,
-  renderHPLife: renderHPLife,
-  renderProgressbarHP: renderProgressbarHP,
+function countclick(el, count = 6) {
+  const innerText = el.innerText;
+  el.innerText = `${innerText} (${count})`;
+  return function () {
+    count--;
+    if (count === 0) {
+      el.disabled = true;
+    }
+    el.innerText = `${innerText} (${count})`;
+    return count;
+  };
 }
 
-const enemy = {
-  name: 'Charmander',
-  defaultHP: 100,
-  damageHP: 100,
-  elHP: $getElById('health-enemy'),
-  elProgressbar: $getElById('progressbar-enemy'),
-  changeHP: changeHP,
-  renderHP: renderHP,
-  renderHPLife: renderHPLife,
-  renderProgressbarHP: renderProgressbarHP,
-}
-**/
+const countclick1 = countclick($btn);
+const countclick2 = countclick($btnnew);
 
 
-// Функция с замыканием для вывода номера текущего клика
-function click1(cl) {
-  return function() {
-    cl += 1;
-    return cl;
-  }
-}  
-
-const clickclick = click1(0);     //счетчик кликов по кнопке Kick
-const clickclick1 = click1(0);   //счетчик кликов по кнопке New
-
-// Функция с замыканием для подсчета оставшихся кликов и ограничения кликов
-function click2(cl) {
-  return function() {
-    cl -= 1;
-    return cl;
-  }
-}  
-
-const clickoff2 = click2(6);   //создание счетчика оставшихся кликов по кнопке Kick 
-const clickoff3 = click2(6);   //создание счетчика кликов по кнопке New
-
-const clickoff = click2(7);   //создание счетчика для ограничения кол-ва кликов до 6 нажатий  по кнопке Kick
-const clickoff1 = click2(7);  ////создание счетчика для ограничения кол-ва кликов до 6 нажатий  по кнопке New
-
-//обработчик для события "Клиr" по кнопке Kick, используя метод addEventListener 
+//обработчик для события "Клик" по кнопке Kick, используя метод addEventListener 
 $btn.addEventListener('click', function () {
-  if (clickoff() > 0) {
-    console.log(`Вы совершили ${clickclick()}й клик по кнопке Kick`);  //вызов фукнции с замыканием для подсчета кликов по кнопке Kick + кол-во кликов
-    $btn.innerText +=  `осталось ${clickoff2()} кликов`; 
-    character.changeHP(random(20));
-    enemy.changeHP(random(20));
-  }
-  else {
-    $btn.disabled = true;     //ограничение по кликам до 6
-  }
+  countclick1();
+  player1.changeHP(random(20), function () {
+    addLogs(player1, player2);
+  });
+  player2.changeHP(random(20));
+  checkLooser();
 });
 
 //обработчик для события "Клик" по кнопке New, используя метод addEventListener 
 $btnnew.addEventListener('click', function () {
-  if (clickoff1() > 0) {
-    console.log(`Вы совершили ${clickclick1()}й клик по кнопке New`); //вызов функции с замыканием для подсчета кликов по кнопке New  + кол-во кликов
-    $btnnew.innerText +=  `осталось ${clickoff3()} кликов`; 
+  countclick2();
+  player1.changeHP(random(20));
+  player2.changeHP(random(20), function () {
+    addLogs(player2, player1);
+  });
+  checkLooser();
+});      
+
+function checkLoose(player) {
+  if (player.damageHP === 0) {
+    alert('Бедный ' + player.name + ' проиграл бой!');
+    return true;
   }
-  else {
-    $btnnew.disabled = true;   //ограничение по кликам до 6
-  }
-});                  
-
-/**
-function init() {
-  console.log('Start Game!');
-  character.renderHP();
-  enemy.renderHP();
+  return false;
 }
 
-
-
-function renderHP() {
-  this.renderHPLife();
-  this.renderProgressbarHP();
-}
-
-function renderHPLife() {
-  this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
-}
-
-function renderProgressbarHP() {
- this.elProgressbar.style.width = this.damageHP + '%';
-}
-
-function changeHP(count) {
-  this.damageHP -= count;
-
-  const log = this === enemy ? generateLog(this, character) : generateLog(this, enemy);
-  console.log(log);
-
-const $logs = document.getElementById('logs');
-const $p = document.createElement('p');
-$p.innerText = `${log}`;
-$logs.insertBefore($p, $logs.children[0]);
-// console.log($logs.children);
-
-  if (this.damageHP <= count) {
-    this.damageHP = 0;
-    alert('Бедный ' + this.name + ' проиграл бой!');
+function checkLooser() {
+  if (checkLoose(player1) || checkLoose(player2)) {
     $btn.disabled = true;
-  } 
-
-  this.renderHP();
+    $btnnew.disabled = true;
+  }
 }
-**/
 
+function addLogs(pl1, pl2) {
+  const $logs = $getElById('logs');
+  const $p = document.createElement('p');
+  $p.innerText = generateLog(pl1, pl2);
+  $logs.insertBefore($p, $logs.children[0]);
+}
 
 // лог боя
 function generateLog(firstPerson, secondPerson) {
@@ -157,7 +95,3 @@ function generateLog(firstPerson, secondPerson) {
 
   return logs[random(logs.length) - 1];
 }
-
-
-
-init();

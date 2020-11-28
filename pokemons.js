@@ -5,7 +5,7 @@ class Selectors {
   }
 }
 
-class Pokemon extend Selectors {
+class Pokemon extends Selectors {
   constructor ({name, selectors}) {
   	super(selectors);
     this.name = name;
@@ -13,9 +13,6 @@ class Pokemon extend Selectors {
     this.damageHP = 100;
     this.renderHP();
   }
-
- 
-
 
   renderHP = () => {
     this.renderHPLife();
@@ -29,6 +26,15 @@ class Pokemon extend Selectors {
   renderProgressbarHP = () => {
     this.elProgressbar.style.width = this.damageHP + '%';
   }
+
+  changeHP = (count, cb) => {
+      this.damageHP -= count;
+      if (this.damageHP <= count) {
+        this.damageHP = 0;
+      }
+      this.renderHP();
+      cb && cb();
+    };
 }
 
 
