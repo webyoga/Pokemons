@@ -1,23 +1,52 @@
 import Pokemon from "./pokemon.js";  //получение класса Pokemon в main.js
 import random from "./random.js";    //получение функции random в main.js
+import {pokemons} from "./pokemons.js";  //получение переменной в кот записан массив с атаками
 
 function $getElById(id) {
   return document.getElementById(id);
 }
-
+/*
 const $btnnew = $getElById('btn-new');  //кнопка New
 
 const $btn = $getElById('btn-kick');
+*/
+
+const pikachu = pokemons.find(item => item.name === 'Pikachu');
 
 const player1 = new Pokemon ({
-  name: 'Picachu',
-  selectors: 'character',
+  ...pikachu,
+  selectors: 'player1',
 });
 
-const player2 = new Pokemon ({
-  name: 'Charmonder',
-  selectors: 'enemy',
+const $control = document.querySelector('.control');
+
+player1.attacks.forEach(item => {
+  console.log(item);
+  const $btn = document.createElement('button');
+  $btn.classList.add('button');
+  $btn.innerText = item.name;
+  const btnCount = countclick($btn, item.maxCount);
+  $btn.addEventListener('click', () => {
+    console.log('Click button ', $btn.innerText);
+    btnCount();
+    player1.changeHP(random(20), function () {
+    addLogs(player1, player2);
+  });
+  player2.changeHP(random(20));
+  checkLooser();
 });
+  $control.appendChild($btn);
+});
+
+
+const player2 = new Pokemon ({
+   name: 'Charmonder',
+  selectors: 'player2',
+});
+
+
+
+
 
 function countclick(el, count = 6) {
   const innerText = el.innerText;
@@ -57,8 +86,12 @@ $btnnew.addEventListener('click', function () {
 });      
 
 function checkLoose(player) {
-  if (player.damageHP === 0) {
-    alert('Бедный ' + player.name + ' проиграл бой!');
+  if (player.hp === 0) {
+    const $logs = document.getElementById('logs');
+    const $p = document.createElement('p');
+    $p.innerText = `Бедный ${player.name} проиграл бой!`;
+    $logs.insertBefore($p, $logs.children[0]);
+//    alert('Бедный ' + player.name + ' проиграл бой!');
     return true;
   }
   return false;
@@ -66,10 +99,24 @@ function checkLoose(player) {
 
 function checkLooser() {
   if (checkLoose(player1) || checkLoose(player2)) {
-    $btn.disabled = true;
-    $btnnew.disabled = true;
+    const allButtons = document.querySelectorAll('.control .button');
+    allButtons.forEach(item => console.log(item));
+    startgame();
   }
+}  
+
+//начало игры
+function startgame() {
+  const $btn2 = document.createElement('button');
+  $btn2.classList.add('button');
+  $btn2.innerText = 'START';
+  $btn2.addEventListener('click', () => {
+    console.log('Click button ', $btn2.innerText);
+    location.reload();
+  });
+  $control.appendChild($btn2);
 }
+
 
 function addLogs(pl1, pl2) {
   const $logs = $getElById('logs');
