@@ -23,7 +23,6 @@ class Pokemon extends Selectors {
   }
 
   renderHPLife = () => {
-<<<<<<< HEAD
     this.elHP.innerText = this.hp + ' / ' + this.defaultHP;
   }
 
@@ -35,19 +34,6 @@ class Pokemon extends Selectors {
       this.hp -= count;
       if (this.hp <= count) {
         this.hp = 0;
-=======
-    this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
-  }
-
-  renderProgressbarHP = () => {
-    this.elProgressbar.style.width = this.damageHP + '%';
-  }
-
-  changeHP = (count, cb) => {
-      this.damageHP -= count;
-      if (this.damageHP <= count) {
-        this.damageHP = 0;
->>>>>>> 98633b0d6abddc442a7ebae8d965bfbde26aa00e
       }
       this.renderHP();
       cb && cb();

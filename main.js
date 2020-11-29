@@ -16,7 +16,6 @@ const pikachu = pokemons.find(item => item.name === 'Pikachu');
 const player1 = new Pokemon ({
   ...pikachu,
   selectors: 'player1',
-<<<<<<< HEAD
 });
 
 const $control = document.querySelector('.control');
@@ -35,39 +34,14 @@ player1.attacks.forEach(item => {
   });
   player2.changeHP(random(20));
   checkLooser();
-=======
->>>>>>> 98633b0d6abddc442a7ebae8d965bfbde26aa00e
 });
   $control.appendChild($btn);
 });
-
 
 
 const player2 = new Pokemon ({
-<<<<<<< HEAD
    name: 'Charmonder',
   selectors: 'player2',
-=======
-  name: 'Charmonder',
-  selectors: 'player2',
-});
-
-const $control = document.querySelector('.control');
-
-player1.attacks.forEach(item => {
-  console.log(item);
-  const $btn = document.createElement('button');
-  $btn.classList.add('button');
-  $btn.innerText = item.name;
-  const btnCount = countclick($btn, item.maxCount);
-  $btn.addEventListener('click', () => {
-    console.log('Click button ', $btn.innerText);
-    btnCount();
-  });
-  $control.appendChild($btn);
-
-
->>>>>>> 98633b0d6abddc442a7ebae8d965bfbde26aa00e
 });
 
 
