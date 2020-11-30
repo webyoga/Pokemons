@@ -12,8 +12,7 @@ class Pokemon extends Selectors {
     this.hp = hp;
     this.type = type;
     this.attacks = attacks;
-    this.defaultHP = 100;
-    this.damageHP = 100;
+    this.defaultHP = hp;
     this.renderHP();
   }
 
@@ -27,7 +26,7 @@ class Pokemon extends Selectors {
   }
 
   renderProgressbarHP = () => {
-    this.elProgressbar.style.width = this.hp + '%';
+    this.elProgressbar.style.width = ((this.hp * 100) / this.defaultHP)  + '%';
   }
 
   changeHP = (count, cb) => {
