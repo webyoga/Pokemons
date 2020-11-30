@@ -26,9 +26,18 @@ class Pokemon extends Selectors {
   }
 
   renderProgressbarHP = () => {
-    this.elProgressbar.style.width = ((this.hp * 100) / this.defaultHP)  + '%';
+    if (((this.defaultHP * 0.2) < this.hp) && (this.hp < (this.defaultHP * 0.6))) {
+      this.elProgressbar.classList.add('low');
+      this.elProgressbar.style.width = ((this.hp * 100) / this.defaultHP)  + '%';
+    }
+    else if ((this.defaultHP * 0.2) > this.hp) {
+      this.elProgressbar.classList.add('critical');
+      this.elProgressbar.style.width = ((this.hp * 100) / this.defaultHP)  + '%';
+    }
+    else {
+      this.elProgressbar.style.width = ((this.hp * 100) / this.defaultHP)  + '%';
+    }
   }
-
   changeHP = (count, cb) => {
       this.hp -= count;
       if (this.hp <= count) {
