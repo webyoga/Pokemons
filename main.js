@@ -5,11 +5,6 @@ import {pokemons} from "./pokemons.js";  //получение переменно
 function $getElById(id) {
   return document.getElementById(id);
 }
-/*
-const $btnnew = $getElById('btn-new');  //кнопка New
-
-const $btn = $getElById('btn-kick');
-*/
 
 const p1 = pokemons[random(pokemons.length)-1];
 const p2 = pokemons[random(pokemons.length)-1];
@@ -27,10 +22,6 @@ name1.innerText = `${p1.name}`;
 
 const name2 = document.getElementById('name-player2');
 name2.innerText = `${p2.name}`;
-
-
-/* Здесь pokemons[0] - это должен быть ваш Покемон,
- который придет в ваш класс Pokemon */
 
 const player1 = new Pokemon ({
   ...p1,
@@ -83,9 +74,6 @@ player2.attacks.forEach(item => {
   $control.appendChild($btn);
 });
 
-
-
-
 function countclick(el, count = 6) {
   const innerText = el.innerText;
   el.innerText = `${innerText} (${count})`;
@@ -98,31 +86,7 @@ function countclick(el, count = 6) {
     return count;
   };
 }
-/*
-const countclick1 = countclick($btn);
-const countclick2 = countclick($btnnew);
 
-
-//обработчик для события "Клик" по кнопке Kick, используя метод addEventListener 
-$btn.addEventListener('click', function () {
-  countclick1();
-  player1.changeHP(random(20), function () {
-    addLogs(player1, player2);
-  });
-  player2.changeHP(random(20));
-  checkLooser();
-});
-
-//обработчик для события "Клик" по кнопке New, используя метод addEventListener 
-$btnnew.addEventListener('click', function () {
-  countclick2();
-  player1.changeHP(random(20));
-  player2.changeHP(random(20), function () {
-    addLogs(player2, player1);
-  });
-  checkLooser();
-});      
-*/
 function checkLoose(player) {
   if (player.hp === 0) {
     const $logs = document.getElementById('logs');
