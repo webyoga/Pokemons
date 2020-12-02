@@ -1,14 +1,25 @@
 import Pokemon from "./pokemon.js";  //получение класса Pokemon в main.js
 import random from "./random.js";    //получение функции random в main.js
-import {pokemons} from "./pokemons.js";  //получение переменной в кот записан массив с атаками
+// import {pokemons} from "./pokemons.js";  //получение переменной в кот записан массив с атаками
+
+class Game {
+  getPokemons = async () => {
+    const responce = await fetch('https://reactmarathon-api.netlify.app/api/pokemons');
+    const body = await responce.json();
+    return body;
+  }
+
+  start = async () => {
 
 function $getElById(id) {
   return document.getElementById(id);
 }
 
+const pokemons = await this.getPokemons();
+console.log(pokemons)
+
 const p1 = pokemons[random(pokemons.length)-1];
 const p2 = pokemons[random(pokemons.length)-1];
-//const pikachu = pokemons.find(item => item.name === 'Pikachu');
 
 const img1 = document.getElementById('img-player1');
 img1.src = p1.img; 
@@ -93,7 +104,6 @@ function checkLoose(player) {
     const $p = document.createElement('p');
     $p.innerText = `Бедный ${player.name} проиграл бой!`;
     $logs.insertBefore($p, $logs.children[0]);
-//    alert('Бедный ' + player.name + ' проиграл бой!');
     return true;
   }
   return false;
@@ -144,3 +154,10 @@ function generateLog(firstPerson, secondPerson) {
 
   return logs[random(logs.length) - 1];
 }
+
+
+  }
+}
+
+const game = new Game();
+game.start();
